@@ -3,6 +3,7 @@ import streamlit as st
 import plotly.express as px
 import datetime
 import streamlit_authenticator as stauth
+import base64
 
 st.set_page_config(page_title="Ranking COP", layout="wide")
 st.title("Ranking COP")
@@ -57,7 +58,6 @@ if st.session_state["authentication_status"]:
     menor_acumulado_ag = menores_acumulado_ag["IMPRODUTIVAS TOTAL"].min()
     top_dia_ag = top_agendamento_diario[top_agendamento_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]].iloc[0]
 
-    print(menores_acumulado_cont)
 
     rk = st.checkbox("Visualizar Ranking Diário")
     if rk:
@@ -96,7 +96,10 @@ if st.session_state["authentication_status"]:
             }
         
             .card img {
-                border-radius: 50%;
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;  /* deixa redonda */
+                object-fit: cover;   /* corta o excesso sem distorcer */
                 margin-bottom: 12px;
                 margin: 12px 10px;
             }
@@ -111,23 +114,45 @@ if st.session_state["authentication_status"]:
                 font-weight: 500;
                 color: #00ffb3;
             }
+            
             </style>
             """,
             unsafe_allow_html=True
         )
+        
+        
+        img_dia_cont = f'assets/imgs/{top_dia_cont['NOME']}.jpeg'   
+        img_acum_cont =  f'assets/imgs/{top_controlador_mes['TOP MES'].iloc[0]}.jpeg'
 
+        img_dia_ag = f'assets/imgs/{top_dia_ag['NOME']}.jpeg'   
+        img_acum_ag =  f'assets/imgs/{top_agendamento_mes['TOP MES'].iloc[0]}.jpeg'
+      
+
+        def get_base64_of_image(image_path):
+            with open(image_path, "rb") as img_file:
+                return base64.b64encode(img_file.read()).decode()
+
+        img_cont_dia = get_base64_of_image(img_dia_cont)
+        img_cont_acum = get_base64_of_image(img_acum_cont)
+
+        img_ag_dia = get_base64_of_image(img_dia_ag)
+        img_ag_acum = get_base64_of_image(img_acum_ag)
+
+        
+
+       
         st.markdown(
             f"""
             <div class="center-container">
                 <div class="card">
                     <h4>🎖️ Top Controlador do dia</h4>
-                    <img src="https://randomuser.me/api/portraits/women/60.jpg" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_dia}" width="80">
                     <div class="title">{top_dia_cont['NOME']}</div>
                     <div class="value">{top_dia_cont['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
                 <div class="card">
                     <h4>🏅 Top Controlador do mês</h4>
-                    <img src="https://randomuser.me/api/portraits/men/52.jpg" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_acum}" width="80">
                     <div class="title">{top_controlador_mes['TOP MES'].iloc[0]}</div>
                     <div class="value">{int(top_controlador_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
@@ -135,13 +160,13 @@ if st.session_state["authentication_status"]:
              <div class="center-container">
                 <div class="card">
                     <h4>🎖️ Top Agendamento do dia</h4>
-                    <img src="https://randomuser.me/api/portraits/women/60.jpg" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_ag_acum}" width="80">
                     <div class="title">{top_dia_ag['NOME']}</div>
                     <div class="value">{top_dia_ag['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
                 <div class="card">
                     <h4>🏅 Top Agendamento do mês</h4>
-                    <img src="https://randomuser.me/api/portraits/men/52.jpg" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_ag_acum}" width="80">
                     <div class="title">{top_agendamento_mes['TOP MES'].iloc[0]}</div>
                     <div class="value">{int(top_agendamento_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
@@ -195,11 +220,6 @@ if st.session_state["authentication_status"]:
             )
 
         st.plotly_chart(fig_rank1, use_container_width=True)
-
-
-
-        
-
 
     graficos = [
         "IMPRODUTIVAS TOTAL",
@@ -280,3 +300,6 @@ elif st.session_state["authentication_status"] is False:
     st.error("Usuário ou senha incorreta")
 elif st.session_state["authentication_status"] is None:
     st.info("Faça login")
+
+
+
