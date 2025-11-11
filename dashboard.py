@@ -18,6 +18,14 @@ credentials = {
 auth = stauth.Authenticate(credentials, "cookie_name", "signature_key", cookie_expiry_days=30)
 auth.login(location="sidebar")
 
+st.markdown("""
+    <style>
+    div[data-testid="stMarkdownContainer"] p {
+        font-size: 20px;  
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 if st.session_state["authentication_status"]:
     st.sidebar.success(f"Bem-vindo, {st.session_state['name']}!")
     auth.logout("Sair", "sidebar")
@@ -85,11 +93,12 @@ if st.session_state["authentication_status"]:
                 padding: 20px;
                 border-radius: 20px;
                 text-align: center;
-                box-shadow: 0 4px 12px #3F3E3E;
+                box-shadow: 0 4px 12px rgba(100,100,100,0.2);
                 transition: 0.3s;
                 margin-bottom: 100px;
                 animation: float 2.5s ease-in-out infinite;
-                background-color: #292929;
+                background-color: rgba(255, 255, 255, 0.05);
+                border:1px solid rgba(255,255,255,0.2);
             }
         
             .card img {
@@ -111,9 +120,9 @@ if st.session_state["authentication_status"]:
                 font-weight: 500;
                 color: #00ffb3;
             }
-            #data-de-atualizacao-10-11-2025 {
+            #improdutivas-diarias {
                 font-size: 25px;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
             }
             
             </style>
@@ -252,47 +261,51 @@ if st.session_state["authentication_status"]:
         st.plotly_chart(fig, use_container_width=True)
 
     
-    st.title("Valores Gerais")
+    va = st.checkbox("Visualizar Valores Gerais")
 
-    st.markdown(
-            "<h2 style='font-size:30px;' >Improdutivas diarias</h2>",
+    if va:
+
+        st.title("Valores Gerais")
+
+        st.markdown(
+                "<h2 style='font-size:30px;' >Improdutivas diarias</h2>",
+                unsafe_allow_html=True
+            ) 
+
+        fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR DIARIO", text="VALOR DIARIO",)
+        fig_diario.update_traces(
+                    textposition="outside",  # ou "top center"
+                    textfont=dict(size=14),
+                )
+        
+        fig_diario.update_layout(
+                    autosize = True,
+                    width=None,
+                    template="ggplot2",
+                    uniformtext_minsize=8,
+                    uniformtext_mode="hide",
+                    margin=dict(t=30, b=0)
+                )
+
+        st.plotly_chart(fig_diario, use_container_width=True)
+        
+
+        st.markdown(
+            "<h2 style='font-size:30px;' >Valores acumuladas</h2>",
             unsafe_allow_html=True
         ) 
-
-    fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR DIARIO", text="VALOR DIARIO",)
-    fig_diario.update_traces(
-                textposition="outside",  # ou "top center"
-                textfont=dict(size=14),
-            )
-    
-    fig_diario.update_layout(
-                autosize = True,
-                width=None,
-                template="ggplot2",
-                uniformtext_minsize=8,
-                uniformtext_mode="hide",
-                margin=dict(t=30, b=0)
-            )
-
-    st.plotly_chart(fig_diario, use_container_width=True)
-    
-
-    st.markdown(
-        "<h2 style='font-size:30px;' >Valores acumuladas</h2>",
-        unsafe_allow_html=True
-    ) 
-    if servico_escolhido == servs[0]:
-        for i in graficos[:1]:
-            gera_grafico(i)
-    if servico_escolhido == servs[1]:
-        for i in graficos[1:2]:
-            gera_grafico(i)
-    if servico_escolhido == servs[2]:
-        for i in graficos[2:3]:
-            gera_grafico(i)
-    if servico_escolhido == servs[3]:
-        for i in graficos[3:4]:
-            gera_grafico(i)
+        if servico_escolhido == servs[0]:
+            for i in graficos[:1]:
+                gera_grafico(i)
+        if servico_escolhido == servs[1]:
+            for i in graficos[1:2]:
+                gera_grafico(i)
+        if servico_escolhido == servs[2]:
+            for i in graficos[2:3]:
+                gera_grafico(i)
+        if servico_escolhido == servs[3]:
+            for i in graficos[3:4]:
+                gera_grafico(i)
     
 
 
