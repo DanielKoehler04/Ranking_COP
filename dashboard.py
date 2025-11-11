@@ -72,7 +72,6 @@ if st.session_state["authentication_status"]:
                     transform: translateY(-0.5rem);
                 }
             }
-
             .center-container {
                 display: flex;
                 justify-content: center;
@@ -80,15 +79,13 @@ if st.session_state["authentication_status"]:
                 gap: 40px; /* espaçamento entre cards */
                 flex-wrap: wrap; /* se a tela for pequena, quebra linha */
                 margin-top: 10px;
-                maring-bottom: 100px
+               
             }
             .card {
-                
                 padding: 20px;
                 border-radius: 20px;
                 text-align: center;
                 box-shadow: 0 4px 12px #3F3E3E;
-            
                 transition: 0.3s;
                 margin-bottom: 100px;
                 animation: float 2.5s ease-in-out infinite;
@@ -96,15 +93,15 @@ if st.session_state["authentication_status"]:
             }
         
             .card img {
-                width: 80px;
-                height: 80px;
+                width: 100px;
+                height: 100px;
                 border-radius: 50%;  /* deixa redonda */
                 object-fit: cover;   /* corta o excesso sem distorcer */
                 margin-bottom: 12px;
                 margin: 12px 10px;
             }
             .title {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 600;
                 margin-bottom: 8px;
                 color: white1;
@@ -113,6 +110,10 @@ if st.session_state["authentication_status"]:
                 font-size: 19px;
                 font-weight: 500;
                 color: #00ffb3;
+            }
+            #data-de-atualizacao-10-11-2025 {
+                font-size: 25px;
+                margin-bottom: 20px;
             }
             
             </style>
@@ -138,21 +139,22 @@ if st.session_state["authentication_status"]:
         img_ag_dia = get_base64_of_image(img_dia_ag)
         img_ag_acum = get_base64_of_image(img_acum_ag)
 
-        
+        data_de_atualizacao = df["DATA"].iloc[0]        
 
        
         st.markdown(
             f"""
+            <h2 class="data">Data de Atualização: {data_de_atualizacao}</h2>
             <div class="center-container">
                 <div class="card">
                     <h4>🎖️ Top Controlador do dia</h4>
-                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_dia}" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_dia}" width="120">
                     <div class="title">{top_dia_cont['NOME']}</div>
                     <div class="value">{top_dia_cont['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
                 <div class="card">
                     <h4>🏅 Top Controlador do mês</h4>
-                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_acum}" width="80">
+                    <img class="img-dia" src="data:image/jpeg;base64,{img_cont_acum}" width="120">
                     <div class="title">{top_controlador_mes['TOP MES'].iloc[0]}</div>
                     <div class="value">{int(top_controlador_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
