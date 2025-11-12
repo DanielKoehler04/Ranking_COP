@@ -16,7 +16,12 @@ credentials = {
 }
 
 auth = stauth.Authenticate(credentials, "cookie_name", "signature_key", cookie_expiry_days=30)
+
 auth.login(location="sidebar")
+
+authentication_status = st.session_state["authentication_status"]
+name = st.session_state.get("name")
+username = st.session_state.get("username")
 
 st.markdown("""
     <style>
@@ -26,7 +31,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-if st.session_state["authentication_status"]:
+if authentication_status:
     st.sidebar.success(f"Bem-vindo, {st.session_state['name']}!")
     auth.logout("Sair", "sidebar")
     
@@ -311,9 +316,9 @@ if st.session_state["authentication_status"]:
 
             
 
-elif st.session_state["authentication_status"] is False:
+elif authentication_status is False:
     st.error("Usuário ou senha incorreta")
-elif st.session_state["authentication_status"] is None:
+elif authentication_status is None:
     st.info("Faça login")
 
 
