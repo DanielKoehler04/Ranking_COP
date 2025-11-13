@@ -173,20 +173,6 @@ if authentication_status:
                     <div class="value">{int(top_controlador_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
             </div>
-             <div class="center-container">
-                <div class="card">
-                    <h4>🎖️ Top Agendamento do dia</h4>
-                    <img class="img-dia" src="data:image/jpeg;base64,{img_ag_acum}" width="80">
-                    <div class="title">{top_dia_ag['NOME']}</div>
-                    <div class="value">{top_dia_ag['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
-                </div>
-                <div class="card">
-                    <h4>🏅 Top Agendamento do mês</h4>
-                    <img class="img-dia" src="data:image/jpeg;base64,{img_ag_acum}" width="80">
-                    <div class="title">{top_agendamento_mes['TOP MES'].iloc[0]}</div>
-                    <div class="value">{int(top_agendamento_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
-                </div>
-            </div>
             """,
             unsafe_allow_html=True
         )
