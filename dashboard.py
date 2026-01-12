@@ -72,7 +72,7 @@ if authentication_status:
     top_dia_ag = top_agendamento_diario[top_agendamento_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]].iloc[0]
 
 
-    rk = st.checkbox("Visualizar Ranking Diário")
+    rk = st.checkbox("Visualizar Ranking")
     if rk:
         st.markdown(
             """
@@ -161,13 +161,13 @@ if authentication_status:
             <h2 class="data">Data de Atualização: {data_de_atualizacao}</h2>
             <div class="center-container">
                 <div class="card">
-                    <h4>🎖️ Top Controlador do dia</h4>
+                    <h4>🎖️ Top Controlador da semana</h4>
                     <img class="img-dia" src="data:image/jpeg;base64,{img_cont_dia}" width="120">
                     <div class="title">{top_dia_cont['NOME']}</div>
                     <div class="value">{top_dia_cont['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
                 <div class="card">
-                    <h4>🏅 Top Controlador do mês</h4>
+                    <h4>🏅 Top Controlador do Período</h4>
                     <img class="img-dia" src="data:image/jpeg;base64,{img_cont_acum}" width="120">
                     <div class="title">{top_controlador_mes['TOP MES'].iloc[0]}</div>
                     <div class="value">{int(top_controlador_mes['TOTAL MES'].iloc[0])} - IMPRODUTIVAS REPETIDAS</div>
@@ -181,7 +181,7 @@ if authentication_status:
         if len(menores_cont) > 1:
 
             st.markdown(
-                "<h2 style='font-size:30px;' >Acumulado dos melhores do dia</h2>",
+                "<h2 style='font-size:30px;' >Acumulado dos melhores da Semana</h2>",
                 unsafe_allow_html=True
             ) 
 
@@ -263,7 +263,7 @@ if authentication_status:
                 unsafe_allow_html=True
             ) 
 
-        fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR DIARIO", text="VALOR DIARIO",)
+        fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR DIARIO", text="VALOR SEMANAL",)
         fig_diario.update_traces(
                     textposition="outside",  # ou "top center"
                     textfont=dict(size=14),
