@@ -259,7 +259,7 @@ if authentication_status:
         st.title("Valores Gerais")
 
         st.markdown(
-                "<h2 style='font-size:30px;' >Improdutivas diarias</h2>",
+                "<h2 style='font-size:30px;' >Improdutivas Semanais</h2>",
                 unsafe_allow_html=True
             ) 
 
