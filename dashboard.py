@@ -263,7 +263,7 @@ if authentication_status:
                 unsafe_allow_html=True
             ) 
 
-        fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR DIARIO", text="VALOR SEMANAL",)
+        fig_diario = px.bar(top_controlador_diario, x="NOME", y="VALOR SEMANAL", text="VALOR SEMANAL",)
         fig_diario.update_traces(
                     textposition="outside",  # ou "top center"
                     textfont=dict(size=14),
