@@ -51,12 +51,12 @@ if authentication_status:
     top_controlador_diario = df[df["TIPO"] == "CONTROLE"].copy()
     top_controlador_mes = df[df["TIPO MES"] == "CONTROLE"].copy()
     
-    top_controlador_diario["VALOR DIARIO"] = pd.to_numeric(top_controlador_diario["VALOR DIARIO"], errors="coerce")
-    menor_valor_cont = top_controlador_diario["VALOR DIARIO"].min()
-    menores_cont = top_controlador_diario[top_controlador_diario["VALOR DIARIO"] == menor_valor_cont][["NOME", "VALOR DIARIO"]]
-    menores_acumulado_cont = top_controlador_diario[top_controlador_diario["VALOR DIARIO"] == menor_valor_cont][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]]
+    top_controlador_diario["VALOR SEMANAL"] = pd.to_numeric(top_controlador_diario["VALOR SEMANAL"], errors="coerce")
+    menor_valor_cont = top_controlador_diario["VALOR SEMANAL"].min()
+    menores_cont = top_controlador_diario[top_controlador_diario["VALOR SEMANAL"] == menor_valor_cont][["NOME", "VALOR SEMANAL"]]
+    menores_acumulado_cont = top_controlador_diario[top_controlador_diario["VALOR SEMANAL"] == menor_valor_cont][["NOME", "IMPRODUTIVAS TOTAL", "VALOR SEMANAL"]]
     menor_acumulado_cont = menores_acumulado_cont["IMPRODUTIVAS TOTAL"].min()
-    top_dia_cont = top_controlador_diario[top_controlador_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_cont][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]].iloc[0]
+    top_dia_cont = top_controlador_diario[top_controlador_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_cont][["NOME", "IMPRODUTIVAS TOTAL", "VALOR SEMANAL"]].iloc[0]
 
 
    
@@ -64,12 +64,12 @@ if authentication_status:
     top_agendamento_diario = df[df["TIPO"] == "AGENDAMENTO"].copy()
     top_agendamento_mes = df[df["TIPO MES"] == "AGENDAMENTO"].copy()
 
-    top_agendamento_diario["VALOR DIARIO"] = pd.to_numeric(top_agendamento_diario["VALOR DIARIO"], errors="coerce")
-    menor_valor_ag = top_agendamento_diario["VALOR DIARIO"].min()
-    menores_ag = top_agendamento_diario[top_agendamento_diario["VALOR DIARIO"] == menor_valor_ag][["NOME", "VALOR DIARIO"]]
-    menores_acumulado_ag = top_agendamento_diario[top_agendamento_diario["VALOR DIARIO"] == menor_valor_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]]
+    top_agendamento_diario["VALOR SEMANAL"] = pd.to_numeric(top_agendamento_diario["VALOR SEMANAL"], errors="coerce")
+    menor_valor_ag = top_agendamento_diario["VALOR SEMANAL"].min()
+    menores_ag = top_agendamento_diario[top_agendamento_diario["VALOR SEMANAL"] == menor_valor_ag][["NOME", "VALOR SEMANAL"]]
+    menores_acumulado_ag = top_agendamento_diario[top_agendamento_diario["VALOR SEMANAL"] == menor_valor_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR SEMANAL"]]
     menor_acumulado_ag = menores_acumulado_ag["IMPRODUTIVAS TOTAL"].min()
-    top_dia_ag = top_agendamento_diario[top_agendamento_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR DIARIO"]].iloc[0]
+    top_dia_ag = top_agendamento_diario[top_agendamento_diario["IMPRODUTIVAS TOTAL"] == menor_acumulado_ag][["NOME", "IMPRODUTIVAS TOTAL", "VALOR SEMANAL"]].iloc[0]
 
 
     rk = st.checkbox("Visualizar Ranking")
@@ -164,7 +164,7 @@ if authentication_status:
                     <h4>🎖️ Top Controlador da semana</h4>
                     <img class="img-dia" src="data:image/jpeg;base64,{img_cont_dia}" width="120">
                     <div class="title">{top_dia_cont['NOME']}</div>
-                    <div class="value">{top_dia_cont['VALOR DIARIO']} - IMPRODUTIVAS REPETIDAS</div>
+                    <div class="value">{top_dia_cont['VALOR SEMANAL']} - IMPRODUTIVAS REPETIDAS</div>
                 </div>
                 <div class="card">
                     <h4>🏅 Top Controlador do Período</h4>
