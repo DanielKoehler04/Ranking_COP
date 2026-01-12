@@ -4,6 +4,9 @@ import plotly.express as px
 import datetime
 import streamlit_authenticator as stauth
 import base64
+from io import BytesIO
+import openpyxl
+from openpyxl.utils import get_column_letter
 
 st.set_page_config(page_title="Ranking COP", layout="wide")
 st.title("Ranking COP")
@@ -39,7 +42,53 @@ if authentication_status:
     data_atual = datetime.date.today()
 
     url = "https://docs.google.com/spreadsheets/d/1cT8Lwp49xedjsHgXuu0KEmS_FzB18gYpyIV1UDxJTUk/gviz/tq?tqx=out:csv"
+    url_base = "https://docs.google.com/spreadsheets/d/1cT8Lwp49xedjsHgXuu0KEmS_FzB18gYpyIV1UDxJTUk/gviz/tq?tqx=out:csv&gid=627366538"
+    
+    @st.cache_data(ttl=3600)  # 1 hora
+    def carregar_base():
+        df_base = pd.read_csv(url_base, on_bad_lines='skip')
+        return df_base
     df = pd.read_csv(url, on_bad_lines='skip')
+    df_base = carregar_base()
+    
+
+    controle = ["ANA ELOISA", "DAVI", "ESTEVÃO", "JULIA", "KAMILE", "MELISSA", "VAGNER" ]
+    controle_escolhido = st.sidebar.selectbox("Selecione o controlador", controle )
+
+    df_base = df_base[df_base["IMPRODUTIVA"] == "IMPRODUTIVA"]
+    df_base = df_base[["CONTROLADOR", "ORDEM", "Cliente", "Cidade", "Bairro", "Fluxo", "Causa", "Fim - Data", "Fim - Usuário"]]
+ 
+    df_base = df_base[df_base["CONTROLADOR"] == controle_escolhido]
+
+    def gerar_excel(dataframe):
+         buffer = BytesIO()
+
+         with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+            dataframe.to_excel(writer, index=False, sheet_name="Relatorio")
+
+            worksheet = writer.sheets["Relatorio"]
+
+            for col_idx, col in enumerate(df.columns, 1):
+                max_length = max(
+                    df[col].astype(str).map(len).max(),
+                    len(col)
+                )
+                adjusted_width = max_length + 2
+                worksheet.column_dimensions[
+                    get_column_letter(col_idx)
+                ].width = adjusted_width
+
+            buffer.seek(0)
+            return buffer
+
+    excel_file = gerar_excel(df_base)
+
+    st.sidebar.download_button(
+        label="Baixar Dados",
+        data=excel_file,
+        file_name=f"{controle_escolhido}_improdutivas.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
     st.sidebar.header("Filtros")
 
@@ -47,7 +96,6 @@ if authentication_status:
 
     servico_escolhido = st.sidebar.selectbox("Selecione a categoria", servs )
 
-    
     top_controlador_diario = df[df["TIPO"] == "CONTROLE"].copy()
     top_controlador_mes = df[df["TIPO MES"] == "CONTROLE"].copy()
     
